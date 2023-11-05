@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class InitialMigration1698855769892 implements MigrationInterface {
-    name = 'InitialMigration1698855769892'
+export class InitialMigration1699149827552 implements MigrationInterface {
+    name = 'InitialMigration1699149827552'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`CREATE TABLE "pizzas" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying NOT NULL, "preco" numeric(10,2) NOT NULL, CONSTRAINT "PK_27f7ede7b9304d8372a336d1e5d" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "pizzas" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying NOT NULL, "preco" character varying NOT NULL, CONSTRAINT "PK_27f7ede7b9304d8372a336d1e5d" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "pedido" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), CONSTRAINT "PK_af8d8b3d07fae559c37f56b3f43" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "item do pedido" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "quantidade" integer NOT NULL DEFAULT '1', CONSTRAINT "PK_1aeb0bbb503ddb502a5c507d53a" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "pedido_items_item do pedido" ("pedidoId" uuid NOT NULL, "itemDoPedidoId" uuid NOT NULL, CONSTRAINT "PK_47c3c8d9f7d233d0fcd23650dd2" PRIMARY KEY ("pedidoId", "itemDoPedidoId"))`);

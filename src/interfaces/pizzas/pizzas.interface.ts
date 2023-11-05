@@ -3,7 +3,12 @@ export interface IPizza {
     preco: number
 }
 
+export interface IPizzaReturned {
+    name: string,
+    preco: string
+}
+
 export interface IPizzaToUpdated {
     name?: string,
-    preco?: number
+    preco?: any
 }

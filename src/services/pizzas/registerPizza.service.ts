@@ -1,10 +1,10 @@
 import { AppDataSource } from "../../data-source";
 import { Pizza } from "../../entities/pizza.entity";
 import { AppError } from "../../error/appError";
-import { IPizza } from "../../interfaces/pizzas/pizzas.interface";
+import { IPizza, IPizzaReturned } from "../../interfaces/pizzas/pizzas.interface";
 
 
-const RegisterPizzaService = async ({name, preco}: IPizza) => {
+const RegisterPizzaService = async ({name, preco}: IPizza): Promise<IPizzaReturned> => {
     const pizzaRepository = AppDataSource.getRepository(Pizza)
 
     const nameAlreadyRegister = await pizzaRepository.findOne({
@@ -15,9 +15,15 @@ const RegisterPizzaService = async ({name, preco}: IPizza) => {
         throw new AppError(403, "Pizza already register")
     }
 
+    const precoFormatado = preco.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+    })
+
+
     const newPizza = await pizzaRepository.save({
         name,
-        preco
+        preco: precoFormatado
     })
 
     return newPizza

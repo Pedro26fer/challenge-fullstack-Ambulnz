@@ -12,8 +12,8 @@ export class Pizza{
     @Column({nullable: false})
     name: string
 
-    @Column({nullable: false, type: 'decimal', precision: 10, scale: 2})
-    preco: number
+    @Column({nullable: false})
+    preco: string
 
     @OneToOne(() => ItemDoPedido, (item) => item.pizza)
     item: ItemDoPedido
@@ -24,10 +24,4 @@ export class Pizza{
         }
     }
 
-    get precoFormatado() : string {
-        return this.preco.toLocaleString('pt-BR', {
-            style: 'currency',
-            currency: 'BRL'
-        })
-    }
 }
