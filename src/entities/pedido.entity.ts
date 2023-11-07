@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, ManyToMany, JoinTable} from 'typeorm'
+import {Entity, PrimaryGeneratedColumn, OneToMany} from 'typeorm'
 import { v4 as uuid} from 'uuid'
 import { ItemDoPedido } from './itemDoPedido.entity'
 
@@ -8,8 +8,7 @@ export class Pedido{
     @PrimaryGeneratedColumn("uuid")
     readonly id: string
 
-    @ManyToMany(() => ItemDoPedido, (item) => item.pedido)
-    @JoinTable()
+    @OneToMany(() => ItemDoPedido, (item) => item.pedido, {eager: true})
     items: ItemDoPedido[]
 
     constructor(){

@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryGeneratedColumn, OneToOne} from 'typeorm'
+import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm'
 import {v4 as uuid} from 'uuid'
 import { ItemDoPedido } from './itemDoPedido.entity'
 
@@ -14,9 +14,6 @@ export class Pizza{
 
     @Column({nullable: false})
     preco: string
-
-    @OneToOne(() => ItemDoPedido, (item) => item.pizza)
-    item: ItemDoPedido
 
     constructor(){
         if(!this.id){

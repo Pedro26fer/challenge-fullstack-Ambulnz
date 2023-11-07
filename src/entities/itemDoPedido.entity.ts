@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, OneToOne, Column, ManyToMany} from 'typeorm'
+import {Entity, PrimaryGeneratedColumn, OneToOne, Column, ManyToOne, JoinColumn} from 'typeorm'
 import { v4 as uuid} from 'uuid'
 import { Pizza } from './pizza.entity'
 import { Pedido } from './pedido.entity'
@@ -12,11 +12,12 @@ export class ItemDoPedido{
     @Column({default: 1})
     quantidade: number
 
-    @OneToOne(() => Pizza, (pizza) => pizza.item)
+    @OneToOne(() => Pizza)
+    @JoinColumn()
     pizza: Pizza
 
-    @ManyToMany(() => Pedido, (pedido) => pedido.items)
-    pedido: Pedido[]
+    @ManyToOne(() => Pedido, (pedido) => pedido.items)
+    pedido: Pedido
 
 
     constructor(){
