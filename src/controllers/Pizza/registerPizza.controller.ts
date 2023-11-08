@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IPizza } from "../../interfaces/pizzas/pizzas.interface";
+import { IPizza } from "../../interfaces/Pizza/pizzas.interface";
 import { AppError } from "../../error/appError";
 import { handleError } from "../../error/handleError";
 import RegisterPizzaService from "../../services/Pizzas/registerPizza.service";

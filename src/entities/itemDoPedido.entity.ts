@@ -4,7 +4,7 @@ import { Pizza } from './pizza.entity'
 import { Pedido } from './pedido.entity'
 
 
-@Entity("item do pedido")
+@Entity("item_do_pedido")
 export class ItemDoPedido{
     @PrimaryGeneratedColumn("uuid")
     readonly id: string
@@ -12,7 +12,7 @@ export class ItemDoPedido{
     @Column({default: 1})
     quantidade: number
 
-    @OneToOne(() => Pizza)
+    @OneToOne(() => Pizza, {cascade:true})
     @JoinColumn()
     pizza: Pizza
 

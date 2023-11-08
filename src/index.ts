@@ -3,6 +3,7 @@ import { AppDataSource } from './data-source'
 import { globalErrorMiddleware } from './middlewares/globalError.middleware'
 import { pizzaRoutes } from './routes/pizzas/pizzaRoute.routes'
 import { ordersRoute } from './routes/order/orderRoute.routes'
+import { itemRoute } from './routes/item/item.routes'
 
 AppDataSource.initialize()
     .then(() => {
@@ -14,6 +15,7 @@ AppDataSource.initialize()
 
         pizzaRoutes(app)
         ordersRoute(app)
+        itemRoute(app)
         
         return app.listen(process.env.PORT || 3000)
     })

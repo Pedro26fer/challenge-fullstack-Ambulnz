@@ -8,7 +8,7 @@ export class Pedido{
     @PrimaryGeneratedColumn("uuid")
     readonly id: string
 
-    @OneToMany(() => ItemDoPedido, (item) => item.pedido, {eager: true})
+    @OneToMany(() => ItemDoPedido, (item) => item.pedido, {cascade: true}  )
     items: ItemDoPedido[]
 
     constructor(){

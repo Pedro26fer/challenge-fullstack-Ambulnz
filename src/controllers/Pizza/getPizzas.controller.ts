@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { AppError } from "../../error/appError";
 import { handleError } from "../../error/handleError";
 import GetPizzasService from "../../services/Pizzas/getPizzas.service";
-import { IPizza } from "../../interfaces/pizzas/pizzas.interface";
+import { IPizza } from "../../interfaces/Pizza/pizzas.interface";
 
 const GetPizzasController = async (
   req: Request,
