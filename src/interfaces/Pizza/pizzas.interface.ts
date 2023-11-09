@@ -1,14 +1,14 @@
 export interface IPizza {
     name: string,
-    preco: number
+    price: number
 }
 
 export interface IPizzaReturned {
     name: string,
-    preco: string
+    price: string
 }
 
 export interface IPizzaToUpdated {
     name?: string,
-    preco?: any
+    price?: any
 }

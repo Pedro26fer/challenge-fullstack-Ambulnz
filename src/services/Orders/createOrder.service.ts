@@ -1,15 +1,14 @@
-import { AppDataSource } from "../../data-source"
-import { Pedido } from "../../entities/pedido.entity"
-import { Order } from "../../interfaces/Order/order.interface"
+import { AppDataSource } from "../../data-source";
+import { Order } from "../../entities/order.entity";
 
 
-const CreateOrderService = async () : Promise<Order> => {
-    const orderRepository = AppDataSource.getRepository(Pedido)
+const CreateOrderService = async (): Promise<Order> => {
+  const orderRepository = AppDataSource.getRepository(Order);
 
-    const order =  orderRepository.create()
-    await orderRepository.save(order)
+  const order = orderRepository.create();
+  await orderRepository.save(order);
 
-    return order
-}
+  return order;
+};
 
-export default CreateOrderService
+export default CreateOrderService;

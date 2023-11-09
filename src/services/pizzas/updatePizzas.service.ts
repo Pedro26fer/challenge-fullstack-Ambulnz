@@ -14,15 +14,15 @@ const UpdatePizzasService = async (id: string, data: IPizzaToUpdated) => {
     throw new AppError(404, "Pizza not found");
   }
 
-  let { preco } = data;
+  let { price } = data;
 
-  if (preco) {
-    let precoFormatado = preco.toLocaleString("pt-BR", {
+  if (price) {
+    let formatedPrice = price.toLocaleString("pt-BR", {
       style: "currency",
       currency: "BRL",
     });
 
-    data.preco = precoFormatado;
+    data.price = formatedPrice;
   }
 
   await pizzaRepository.update(pizzaToUpdate.id, data);

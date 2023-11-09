@@ -7,5 +7,5 @@ export const pizzaRoutes = (app: Express) => {
     app.get("/pizzas", GetPizzasController)
     app.post("/pizzas", RegisterPizzaController)
     app.delete("/pizzas/:id", DeletePizzasController)
-    app.put("/pizzas/:id", UpdatePizzaController)
+    app.patch("/pizzas/:id", UpdatePizzaController)
 }

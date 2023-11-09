@@ -8,7 +8,7 @@ import {
 
 const RegisterPizzaService = async ({
   name,
-  preco,
+  price,
 }: IPizza): Promise<IPizzaReturned> => {
   const pizzaRepository = AppDataSource.getRepository(Pizza);
 
@@ -20,14 +20,14 @@ const RegisterPizzaService = async ({
     throw new AppError(403, "Pizza already register");
   }
 
-  const precoFormatado = preco.toLocaleString("pt-BR", {
+  const formatedPrice = price.toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
 
   const newPizza = await pizzaRepository.save({
     name,
-    preco: precoFormatado,
+    price: formatedPrice,
   });
 
   return newPizza;

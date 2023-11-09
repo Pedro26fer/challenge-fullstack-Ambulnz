@@ -1,7 +1,6 @@
-import { ItemDoPedido } from "../../entities/itemDoPedido.entity";
+import { Buys } from "../../entities/buys.entity";
 
-
-export interface Order {
-    id: string,
-    items: ItemDoPedido[]
+export interface OrderRegister {
+  id: string;
+  items: Buys[];
 }
