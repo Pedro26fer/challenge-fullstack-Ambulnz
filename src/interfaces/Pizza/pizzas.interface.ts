@@ -4,6 +4,7 @@ export interface IPizza {
 }
 
 export interface IPizzaReturned {
+    id: string
     name: string,
     price: string
 }

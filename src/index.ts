@@ -5,20 +5,15 @@ import { pizzaRoutes } from './routes/pizzas/pizzaRoute.routes'
 import { ordersRoute } from './routes/order/orderRoute.routes'
 import { itemRoute } from './routes/item/item.routes'
 
-AppDataSource.initialize()
-    .then(() => {
-        const app = express()
 
-        app.use(express.json())
+const app = express()
 
-        app.use(globalErrorMiddleware)
+app.use(express.json())
 
-        pizzaRoutes(app)
-        ordersRoute(app)
-        itemRoute(app)
-        
-        return app.listen(process.env.PORT || 3000)
-    })
-    .catch((err) => {
-        console.error("Error during Data Source initialization", err)
-    })
+app.use(globalErrorMiddleware)
+
+pizzaRoutes(app)
+ordersRoute(app)
+itemRoute(app)
+
+export default app
