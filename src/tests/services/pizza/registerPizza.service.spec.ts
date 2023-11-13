@@ -3,7 +3,8 @@ import { DataSource } from "typeorm"
 import { AppDataSource } from "../../../data-source"
 
 
-describe("Create a Pizza", () => {
+
+describe("Create Pizzas test", () => {
     let connection: DataSource
 
     beforeAll(async () => {
@@ -37,5 +38,6 @@ describe("Create a Pizza", () => {
         )
         expect(newPizza.id).toBeDefined()
     })
+
     
 })
