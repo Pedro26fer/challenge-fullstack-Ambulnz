@@ -1,6 +1,5 @@
 import { DataSource } from "typeorm";
 import { AppDataSource } from "../../../data-source";
-import CreateOrderService from "../../../services/Orders/createOrder.service";
 import DeleteOrderService from "../../../services/Orders/deleteOrder.service";
 import { Order } from "../../../entities/order.entity";
 
@@ -22,7 +21,8 @@ describe("Delete an order", () => {
 
     test("Should delete an order instance", async () => {
         const orderRepository = AppDataSource.getRepository(Order)
-        const newOrder = await CreateOrderService()
+        const newOrder = orderRepository.create({})
+        await orderRepository.save(newOrder)
         const {id} = newOrder
         await DeleteOrderService(id)
         const deletedOrder = await orderRepository.findOne({where: {id}})
