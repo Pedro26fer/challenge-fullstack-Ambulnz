@@ -3,6 +3,7 @@ import { AppDataSource } from "../../../data-source";
 import RegisterPizzaService from "../../../services/Pizzas/registerPizza.service";
 import UpdatePizzasService from "../../../services/Pizzas/updatePizzas.service";
 import GetPizzasService from "../../../services/Pizzas/getPizzas.service";
+import { Pizza } from "../../../entities/pizza.entity";
 
 describe("Update Pizzas", () => {
     let connection: DataSource
@@ -20,6 +21,7 @@ describe("Update Pizzas", () => {
     })
 
     test("Should update an instance of pizza in database", async () => {
+
         const name = "Portuguesa"
         const price = 20
 
