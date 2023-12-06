@@ -1,8 +1,7 @@
 import { DataSource } from "typeorm";
 import { AppDataSource } from "../../../data-source";
-import RegisterPizzaService from "../../../services/Pizzas/registerPizza.service";
 import DeletePizzaService from "../../../services/Pizzas/deletePizzas.service";
-import GetPizzasService from "../../../services/Pizzas/getPizzas.service";
+import { Pizza } from "../../../entities/pizza.entity";
 
 
 describe("Delete Pizzas test", () => {
@@ -21,16 +20,22 @@ describe("Delete Pizzas test", () => {
     })
 
     test("Should delete an instance of pizza in database", async () => {
+        const pizzaRepository = AppDataSource.getRepository(Pizza)
+
         const name = "Calabresa"
         const price = 20
 
-        const pizzaToDeleteData = {name, price}
-        const pizzaToDelete = await RegisterPizzaService(pizzaToDeleteData)
+        const pizzaToDelete = pizzaRepository.create({name: name, price: price.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+          })
+        })
+        await pizzaRepository.save(pizzaToDelete)
+
         const {id} = pizzaToDelete
         await DeletePizzaService(id)
-        const updatedList = await GetPizzasService()
-        const deletedPizza = updatedList.find( pizza => pizza.id === id )
+        const deletedPizza = await pizzaRepository.findOne({where: {id}})
 
-        expect(deletedPizza).toBeUndefined()
+        expect(deletedPizza).toBeNull()
     })
 })

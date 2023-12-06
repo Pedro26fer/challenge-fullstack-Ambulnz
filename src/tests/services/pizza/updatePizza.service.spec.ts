@@ -1,8 +1,6 @@
 import { DataSource } from "typeorm";
 import { AppDataSource } from "../../../data-source";
-import RegisterPizzaService from "../../../services/Pizzas/registerPizza.service";
 import UpdatePizzasService from "../../../services/Pizzas/updatePizzas.service";
-import GetPizzasService from "../../../services/Pizzas/getPizzas.service";
 import { Pizza } from "../../../entities/pizza.entity";
 
 describe("Update Pizzas", () => {
@@ -22,22 +20,28 @@ describe("Update Pizzas", () => {
 
     test("Should update an instance of pizza in database", async () => {
 
+        const pizzaRepository = AppDataSource.getRepository(Pizza)
+
         const name = "Portuguesa"
         const price = 20
 
-        const pizzaToUpdateData = {name, price}
 
-        const pizzaToUpdate = await RegisterPizzaService(pizzaToUpdateData)
+        const pizzaToUpdate = pizzaRepository.create({name: name, price: price.toLocaleString('pt-BR', {
+            style: "currency",
+            currency: "BRL"
+        })})
+        await pizzaRepository.save(pizzaToUpdate)
 
         const {id} = pizzaToUpdate
 
         const dataRequestUpdate = {"name":"A Moda", "price": "R$ 25,00"}
 
-        await UpdatePizzasService(id, dataRequestUpdate)
+        await UpdatePizzasService(id, dataRequestUpdate)        
 
-        const listOfPizzas = await GetPizzasService()
-
-        const pizzaUpdated = listOfPizzas.find(pizza => pizza.name === "A Moda")
+        const pizzaUpdated = await pizzaRepository.findOne({where: {
+            name: "A Moda",
+            price: "R$ 25,00"
+        }})
 
         expect(pizzaUpdated).toBeDefined()
         expect(pizzaUpdated?.name).toBe("A Moda")
