@@ -5,7 +5,7 @@ import { AppError } from "../../error/appError";
 
 const RetrivingEspecificService = async (id: string): Promise<Order> => {
   const orderRepository = AppDataSource.getRepository(Order);
-  const myOrder = await orderRepository.findOne({ where: { id }, relations: ['buys'] });
+  const myOrder = await orderRepository.findOne({ where: { id }, relations: ['buys', 'buys.pizza'] });
 
   if (!myOrder) {
     throw new AppError(404, "Order not found");

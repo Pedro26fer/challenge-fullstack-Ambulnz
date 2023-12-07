@@ -21,8 +21,9 @@ const CreateItemService = async (id: string, data: Item) => {
     },
   });
 
+
   if (!pizza) {
-    throw new AppError(404, "We dont work with this kind of Pizza");
+    throw new AppError(400, "Pizza unavaible");
   }
 
   const item = await itemRepository.save({
