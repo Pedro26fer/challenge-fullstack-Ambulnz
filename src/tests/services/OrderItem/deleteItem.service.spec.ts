@@ -1,12 +1,13 @@
 import { DataSource } from "typeorm";
 import { AppDataSource } from "../../../data-source";
+import DeleteItemService from "../../../services/OrderItem/deleteItem.service";
 import { Order } from "../../../entities/order.entity";
-import RetrivingEspecificService from "../../../services/Orders/retrivingEspecificOrder.service";
 import { Pizza } from "../../../entities/pizza.entity";
 import { Item } from "../../../interfaces/Item/item.interface";
 import { Buys } from "../../../entities/buys.entity";
 
-describe("Get an specific order", () => {
+describe("Should create and delete an Item at Order created also", () => {
+
     let connection: DataSource
 
     beforeAll(async () => {
@@ -21,10 +22,11 @@ describe("Get an specific order", () => {
         await connection.destroy()
     })
 
-    test("Should retrieving an order", async () => {
+
+    test("Testing delete item", async () => {
         const orderRepository = AppDataSource.getRepository(Order)
-        const order = await orderRepository.save({})
-        const {id} = order
+        const order = orderRepository.create()
+        await orderRepository.save(order)
 
         const pizzaRepository = AppDataSource.getRepository(Pizza)
         const pizza = pizzaRepository.create({
@@ -38,21 +40,17 @@ describe("Get an specific order", () => {
             quantity: 1
         } 
 
-        const buysRepository = AppDataSource.getRepository(Buys)
-        const buys = {
-            order : order,
-            pizza : pizza,
-            quantity : 1
-        }
-        const item = buysRepository.create(buys)
-        await buysRepository.save(item)
+        const buyRepository = AppDataSource.getRepository(Buys)
+        let items = buyRepository.create()
+        items.order = order
+        items.pizza = pizza
+        items.quantity = 1
+        await buyRepository.save(items)
 
+        await DeleteItemService(items.id)
 
-        const orderRetrieved = await RetrivingEspecificService(id)
-
-        expect(orderRetrieved).toBeInstanceOf(Order)
-        expect(orderRetrieved.buys[0].pizza).toStrictEqual(buys.pizza)
-        expect(orderRetrieved.buys[0].quantity).toStrictEqual(buys.quantity)
-        expect(orderRetrieved.buys[0].id).toBeDefined
+        const deletedItem = await buyRepository.findOne({where: {id: items.id}})
+        
+        expect(deletedItem).toBeNull()
     })
 })
