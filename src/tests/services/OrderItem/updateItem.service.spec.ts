@@ -1,12 +1,12 @@
 import { DataSource } from "typeorm";
 import { AppDataSource } from "../../../data-source";
-import GetItemService from "../../../services/OrderItem/getItem.service";
+import UpdateItemService from "../../../services/OrderItem/updateItem.service";
+import { Buys } from "../../../entities/buys.entity";
 import { Order } from "../../../entities/order.entity";
 import { Pizza } from "../../../entities/pizza.entity";
 import { Item } from "../../../interfaces/Item/item.interface";
-import { Buys } from "../../../entities/buys.entity";
 
-describe("Get order items",() => {
+describe("testing update an instance of Item", () => {
     let connection: DataSource
 
     beforeAll(async () => {
@@ -21,32 +21,41 @@ describe("Get order items",() => {
         await connection.destroy()
     }) 
 
-
-    test("Should return order items", async () => {
-
+    test("Should update an instance of Item", async () => {
         const orderRepository = AppDataSource.getRepository(Order)
         const order = orderRepository.create()
         await orderRepository.save(order)
 
         const pizzaRepository = AppDataSource.getRepository(Pizza)
-        const pizza = pizzaRepository.create({
+        const pizza1 = pizzaRepository.create({
             name: "Calabresa",
             price: "R$ 20,00"
         })
-        await pizzaRepository.save(pizza)
+        await pizzaRepository.save(pizza1)
+        
+        const pizza2 = pizzaRepository.create({
+            name: "Marguerita",
+            price: "R$ 20,00"
+        })
+        await pizzaRepository.save(pizza2)
 
         const buyRepository = AppDataSource.getRepository(Buys)
         let items = buyRepository.create()
         items.order = order
-        items.pizza = pizza
+        items.pizza = pizza1
         items.quantity = 1
         await buyRepository.save(items)
 
-        const itemsGetted = await GetItemService()
+        const dataUpdate = {
+            quantity: 1,
+            pizza: pizza2
+        }
 
-        expect(itemsGetted).toHaveProperty('map')
-        expect(itemsGetted[0].pizza).toStrictEqual(pizza)
-        expect(itemsGetted[0].quantity).toStrictEqual(1)
-        expect(itemsGetted[0].id).toBeDefined
+        await UpdateItemService(items.id, dataUpdate)
+
+        const itemsUpdated = await buyRepository.findOne({where: {quantity:1, pizza: pizza2}})
+        expect(itemsUpdated).toBeDefined
+    
     })
+
 })
