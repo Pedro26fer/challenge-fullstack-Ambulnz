@@ -13,7 +13,7 @@ export class Pizza {
   @Column({ nullable: false })
   price: string;
 
-  @ManyToMany(() => Ingredients, ingredient => ingredient.pizzas )
+  @ManyToMany(() => Ingredients, ingredient => ingredient.pizzas)
   @JoinTable()
   ingredients: Ingredients[]
 

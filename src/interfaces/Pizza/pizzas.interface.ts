@@ -16,4 +16,5 @@ export interface IPizzaReturned {
 export interface IPizzaToUpdated {
     name?: string,
     price?: any,
+    ingredients?: any[]
 }

@@ -11,7 +11,7 @@ export class Ingredients {
     @Column({nullable: false})
     name: string
 
-    @ManyToMany(() => Pizza, pizza => pizza.ingredients)
+    @ManyToMany(() => Pizza, pizza => pizza.ingredients, {onDelete: 'CASCADE'})
     pizzas: Pizza[]
 
     constructor() {

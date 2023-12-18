@@ -33,14 +33,12 @@ const RegisterPizzaService = async ({
     const ingredientSaved = await ingredientRepository.findOne({where: {name: ingredients[i]}})
 
     if(!ingredientSaved){
-      console.log("passou")
       const newIngredient = ingredientRepository.create({
         name: ingredients[i]
       })
       await ingredientRepository.save(newIngredient)
       allIngrediennts.push(newIngredient)
     }else{
-      console.log("passou 2")
       allIngrediennts.push(ingredientSaved!)
     }
 

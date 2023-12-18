@@ -23,8 +23,9 @@ describe("Integration test to test pizza routes and there responses", () => {
     test("Should be able to create new pizza", async () => {
         const name = "Lombinho"
         const price = 30
+        const ingredients = ["Tomate"]
 
-        const pizzaData: IPizza = {name, price}
+        const pizzaData: IPizza = {name, price, ingredients}
 
         const response = await request(app).post("/pizzas").send(pizzaData)
 

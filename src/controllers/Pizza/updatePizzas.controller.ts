@@ -8,7 +8,7 @@ const UpdatePizzaController = async (req: Request, res: Response) => {
     const { id } = req.params;
     const data = req.body;
     await UpdatePizzasService(id, data);
-    return res.status(200).json();
+    return res.status(202).json();
   } catch (error) {
     if (error instanceof AppError) {
       return handleError(error, res);
