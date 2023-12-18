@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from "typeorm";
 import { v4 as uuid } from "uuid";
+import { Ingredients } from "./ingredients.entity";
 
 @Entity("pizzas")
 export class Pizza {
@@ -11,6 +12,10 @@ export class Pizza {
 
   @Column({ nullable: false })
   price: string;
+
+  @ManyToMany(() => Ingredients, ingredient => ingredient.pizzas )
+  @JoinTable()
+  ingredients: Ingredients[]
 
   constructor() {
     if (!this.id) {

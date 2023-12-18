@@ -5,7 +5,6 @@ import { IPizzaToUpdated } from "../../interfaces/Pizza/pizzas.interface";
 
 const UpdatePizzasService = async (id: string, data: IPizzaToUpdated) => {
   const pizzaRepository = AppDataSource.getRepository(Pizza);
-
   const pizzaToUpdate = await pizzaRepository.findOne({
     where: { id },
   });
@@ -24,10 +23,11 @@ const UpdatePizzasService = async (id: string, data: IPizzaToUpdated) => {
 
     data.price = formatedPrice;
   }
+ 
 
   await pizzaRepository.update(pizzaToUpdate.id, data);
 
   return true;
 };
 
-export default UpdatePizzasService;
+export default UpdatePizzasService

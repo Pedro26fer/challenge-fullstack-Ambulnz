@@ -1,4 +1,5 @@
 import { AppDataSource } from "../../data-source";
+import { Ingredients } from "../../entities/ingredients.entity";
 import { Pizza } from "../../entities/pizza.entity";
 import { AppError } from "../../error/appError";
 import {
@@ -9,8 +10,10 @@ import {
 const RegisterPizzaService = async ({
   name,
   price,
+  ingredients
 }: IPizza): Promise<IPizzaReturned> => {
   const pizzaRepository = AppDataSource.getRepository(Pizza);
+  const ingredientRepository = AppDataSource.getRepository(Ingredients)
 
   const nameAlreadyRegister = await pizzaRepository.findOne({
     where: { name },
@@ -25,9 +28,28 @@ const RegisterPizzaService = async ({
     currency: "BRL",
   });
 
+  const allIngrediennts : Ingredients[] = []
+  for( let i = 0; i < ingredients.length; i++){
+    const ingredientSaved = await ingredientRepository.findOne({where: {name: ingredients[i]}})
+
+    if(!ingredientSaved){
+      console.log("passou")
+      const newIngredient = ingredientRepository.create({
+        name: ingredients[i]
+      })
+      await ingredientRepository.save(newIngredient)
+      allIngrediennts.push(newIngredient)
+    }else{
+      console.log("passou 2")
+      allIngrediennts.push(ingredientSaved!)
+    }
+
+  }
+
   const newPizza = await pizzaRepository.save({
     name,
     price: formatedPrice,
+    ingredients: allIngrediennts
   });
 
   return newPizza;

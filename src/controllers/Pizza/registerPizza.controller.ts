@@ -9,8 +9,8 @@ const RegisterPizzaController = async (
   res: Response
 ): Promise<IPizza | any> => {
   try {
-    const { name, price } = req.body;
-    const newPizza = await RegisterPizzaService({ name, price });
+    const { name, price, ingredients } = req.body;
+    const newPizza = await RegisterPizzaService({ name, price, ingredients });
     return res.status(201).json({
       newPizza,
     });
