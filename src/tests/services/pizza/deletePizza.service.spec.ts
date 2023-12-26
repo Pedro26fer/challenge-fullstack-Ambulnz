@@ -33,6 +33,7 @@ describe("Delete Pizzas test", () => {
         await pizzaRepository.save(pizzaToDelete)
 
         const {id} = pizzaToDelete
+
         await DeletePizzaService(id)
         const deletedPizza = await pizzaRepository.findOne({where: {id}})
 

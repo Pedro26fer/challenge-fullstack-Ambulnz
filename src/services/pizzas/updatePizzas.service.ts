@@ -9,25 +9,13 @@ const UpdatePizzasService = async (id: string, data: IPizzaToUpdated) => {
   const ingredientsRepository = AppDataSource.getRepository(Ingredients);
 
   try {
-    const pizzaToUpdate = await pizzaRepository.findOne({
-      where: { id },
-      relations: ['ingredients'],
-    });
+    if (data.ingredients && data.ingredients.length > 0) {
+      const ingredientsReady: Ingredients[] = [];
 
-    if (!pizzaToUpdate) {
-      throw new AppError(404, "Pizza not found");
-    }
-
-    let { price, ingredients } = data;
-
-    const ingredientsReady: Ingredients[] = [];
-
-    if (ingredients) {
-      for (const ing of ingredients) {
+      for (const ing of data.ingredients) {
         const ingredientSaved = await ingredientsRepository.findOne({ where: { name: ing } });
 
         if (!ingredientSaved) {
-          console.log("entrou");
           const newIngredient = ingredientsRepository.create({ name: ing });
           await ingredientsRepository.save(newIngredient);
           ingredientsReady.push(newIngredient);
@@ -35,28 +23,22 @@ const UpdatePizzasService = async (id: string, data: IPizzaToUpdated) => {
           ingredientsReady.push(ingredientSaved);
         }
       }
+
+      data.ingredients = ingredientsReady;
     }
 
-    if (price) {
-      let formatedPrice = price.toLocaleString("pt-BR", {
+    if (data.price) {
+      data.price = data.price.toLocaleString("pt-BR", {
         style: "currency",
         currency: "BRL",
       });
-
-      pizzaToUpdate.price = formatedPrice;
     }
 
-    if (ingredientsReady.length > 0) {
-      pizzaToUpdate.ingredients = ingredientsReady;
-    }
-
-    console.log("chegou1");
-    await pizzaRepository.save(pizzaToUpdate); 
-    console.log("chegou2");
+    await pizzaRepository.update(id, data);
 
     return true;
   } catch (error) {
-    console.error("Erro durante a atualização da pizza:", error);
+    console.error("Error during pizza update:", error);
     throw new AppError(500, "Internal Server Error");
   }
 };

@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class InitialMigration1702933673274 implements MigrationInterface {
-    name = 'InitialMigration1702933673274'
+export class InitialMigration1703607315228 implements MigrationInterface {
+    name = 'InitialMigration1703607315228'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "ingredients" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying NOT NULL, CONSTRAINT "PK_9240185c8a5507251c9f15e0649" PRIMARY KEY ("id"))`);
@@ -11,7 +11,7 @@ export class InitialMigration1702933673274 implements MigrationInterface {
         await queryRunner.query(`CREATE TABLE "pizzas_ingredients_ingredients" ("pizzasId" uuid NOT NULL, "ingredientsId" uuid NOT NULL, CONSTRAINT "PK_34d2dc00e6f6219d5e691e01c5e" PRIMARY KEY ("pizzasId", "ingredientsId"))`);
         await queryRunner.query(`CREATE INDEX "IDX_759ab5c1129b880ceb1430ff87" ON "pizzas_ingredients_ingredients" ("pizzasId") `);
         await queryRunner.query(`CREATE INDEX "IDX_accc21afbd8f59e03d21cda511" ON "pizzas_ingredients_ingredients" ("ingredientsId") `);
-        await queryRunner.query(`ALTER TABLE "buy" ADD CONSTRAINT "FK_85d2b7a53b9b3e4d699f439d3e7" FOREIGN KEY ("pizzaId") REFERENCES "pizzas"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "buy" ADD CONSTRAINT "FK_85d2b7a53b9b3e4d699f439d3e7" FOREIGN KEY ("pizzaId") REFERENCES "pizzas"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "buy" ADD CONSTRAINT "FK_6e9482ce6526e04d3b15fd9ea56" FOREIGN KEY ("orderId") REFERENCES "order"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "pizzas_ingredients_ingredients" ADD CONSTRAINT "FK_759ab5c1129b880ceb1430ff87d" FOREIGN KEY ("pizzasId") REFERENCES "pizzas"("id") ON DELETE CASCADE ON UPDATE CASCADE`);
         await queryRunner.query(`ALTER TABLE "pizzas_ingredients_ingredients" ADD CONSTRAINT "FK_accc21afbd8f59e03d21cda511a" FOREIGN KEY ("ingredientsId") REFERENCES "ingredients"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);

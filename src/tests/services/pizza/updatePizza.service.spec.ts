@@ -2,6 +2,9 @@ import { DataSource } from "typeorm";
 import { AppDataSource } from "../../../data-source";
 import UpdatePizzasService from "../../../services/Pizzas/updatePizzas.service";
 import { Pizza } from "../../../entities/pizza.entity";
+import { AppError } from "../../../error/appError";
+import { Ingredients } from "../../../entities/ingredients.entity";
+import { IPizzaToUpdated } from "../../../interfaces/Pizza/pizzas.interface";
 
 describe("Update Pizzas", () => {
     let connection: DataSource
@@ -21,30 +24,48 @@ describe("Update Pizzas", () => {
     test("Should update an instance of pizza in database", async () => {
 
         const pizzaRepository = AppDataSource.getRepository(Pizza)
+        const ingredientsRepository = AppDataSource.getRepository(Ingredients)
 
         const name = "Portuguesa"
         const price = 20
 
+        await ingredientsRepository.save({name: "Tomate"})
 
-        const pizzaToUpdate = pizzaRepository.create({name: name, price: price.toLocaleString('pt-BR', {
+        const tomate = await ingredientsRepository.findOne({where:{name:"Tomate"}})
+        if(!tomate){
+            throw new AppError(400, "Failed to create ingredient to test")
+        }
+
+
+        const pizzaToUpdate = pizzaRepository.create({name, price: price.toLocaleString('pt-BR', {
             style: "currency",
-            currency: "BRL"
-        })})
+            currency: "BRL",
+        }), 
+            ingredients:[tomate]
+        })
         await pizzaRepository.save(pizzaToUpdate)
 
         const {id} = pizzaToUpdate
 
-        const dataRequestUpdate = {"name":"A Moda", "price": "R$ 25,00"}
+        const newPrice = 22
+
+        const dataRequestUpdate: IPizzaToUpdated = {name:"A Moda", price: newPrice}
 
         await UpdatePizzasService(id, dataRequestUpdate)        
 
         const pizzaUpdated = await pizzaRepository.findOne({where: {
             name: "A Moda",
-            price: "R$ 25,00"
+            price: newPrice.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })
         }})
 
         expect(pizzaUpdated).toBeDefined()
         expect(pizzaUpdated?.name).toBe("A Moda")
-        expect(pizzaUpdated?.price).toBe("R$ 25,00")
+        expect(pizzaUpdated?.price).toBe(newPrice.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+          }))
     })
 })

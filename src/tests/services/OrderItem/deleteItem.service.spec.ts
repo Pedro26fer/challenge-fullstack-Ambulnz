@@ -35,11 +35,6 @@ describe("Should create and delete an Item at Order created also", () => {
         })
         await pizzaRepository.save(pizza)
 
-        const data : Item = {
-            pizza: "Calabresa",
-            quantity: 1
-        } 
-
         const buyRepository = AppDataSource.getRepository(Buys)
         let items = buyRepository.create()
         items.order = order

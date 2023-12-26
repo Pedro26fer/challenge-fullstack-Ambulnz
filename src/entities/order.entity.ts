@@ -7,7 +7,7 @@ export class Order {
   @PrimaryGeneratedColumn("uuid")
   readonly id: string;
 
-  @OneToMany(() => Buys, (buy) => buy.order, { cascade: true })
+  @OneToMany(() => Buys, (buy) => buy.order, {onDelete: 'CASCADE'})
   buys: Buys[];
 
   constructor() {

@@ -18,7 +18,7 @@ export class Buys {
   @Column({ default: 1 })
   quantity: number;
 
-  @OneToOne(() => Pizza, { cascade: true })
+  @OneToOne(() => Pizza, {onDelete: 'CASCADE'})
   @JoinColumn()
   pizza: Pizza;
 

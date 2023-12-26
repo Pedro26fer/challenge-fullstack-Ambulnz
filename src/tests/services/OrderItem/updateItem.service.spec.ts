@@ -5,6 +5,7 @@ import { Buys } from "../../../entities/buys.entity";
 import { Order } from "../../../entities/order.entity";
 import { Pizza } from "../../../entities/pizza.entity";
 import { Item } from "../../../interfaces/Item/item.interface";
+import { Ingredients } from "../../../entities/ingredients.entity";
 
 describe("testing update an instance of Item", () => {
     let connection: DataSource
@@ -26,16 +27,23 @@ describe("testing update an instance of Item", () => {
         const order = orderRepository.create()
         await orderRepository.save(order)
 
+
+        const ingredientsRepository = AppDataSource.getRepository(Ingredients)
+        const calabresa = {name: "Calabresa"}
+        await ingredientsRepository.save(calabresa)
+
         const pizzaRepository = AppDataSource.getRepository(Pizza)
         const pizza1 = pizzaRepository.create({
             name: "Calabresa",
-            price: "R$ 20,00"
+            price: "R$ 20,00",
+            ingredients: [calabresa]
         })
         await pizzaRepository.save(pizza1)
         
         const pizza2 = pizzaRepository.create({
             name: "Marguerita",
-            price: "R$ 20,00"
+            price: "R$ 20,00",
+            ingredients: [calabresa]
         })
         await pizzaRepository.save(pizza2)
 
@@ -48,7 +56,7 @@ describe("testing update an instance of Item", () => {
 
         const dataUpdate = {
             quantity: 1,
-            pizza: pizza2
+            pizza: "Marguerita"
         }
 
         await UpdateItemService(items.id, dataUpdate)
